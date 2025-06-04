@@ -2,7 +2,6 @@ import request from 'supertest';
 import app from '../index';
 import knex from '../config/db';
 
-
 beforeAll(async () => {
   await knex.migrate.latest();
 });

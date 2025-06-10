@@ -5,7 +5,8 @@ const router = Router();
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { name, email } = req.body;
+    const name = req.body?.name;
+    const email = req.body?.email?.trim();
     if (!name || !email) throw new Error('Name and email are required');
     const user = await createUser(name, email);
     res.status(201).json(user);

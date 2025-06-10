@@ -7,6 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('email').notNullable().unique();
     table.enum('karmaStatus', ['clean', 'blacklisted']).notNullable();
     table.timestamp('createdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
 
   await knex.schema.createTable('wallets', (table) => {

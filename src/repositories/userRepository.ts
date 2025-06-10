@@ -4,12 +4,24 @@ import { User } from '../models/user';
 import axios from 'axios';
 
 export const createUser = async (name: string, email: string): Promise<User> => {
-  const response = await axios.get('https://adjutor.lendsqr.com/v2/verify/karma', {
+  
+  let karmaStatus = 'clean';
+  const response = await axios.get(`https://adjutor.lendsqr.com/v2/verification/karma/${email}`, {
     headers: { Authorization: `Bearer ${process.env.ADJUTOR_API_KEY}` },
-    params: { email }
   });
-  const karmaStatus = response.data.blacklisted ? 'blacklisted' : 'clean';
+
+
+
+  karmaStatus = response.data.blacklisted ? 'blacklisted' : 'clean';
+
+  
   if (karmaStatus === 'blacklisted') throw new Error('User is blacklisted by Lendsqr Adjutor Karma');
+
+  const existing = await knex('users').where({
+    email
+  }).first()
+
+  if(existing) throw new Error("This user already exists")
 
   const user = { id: uuidv4(), name, email, karmaStatus, createdAt: new Date() } as User;
   await knex('users').insert(user);

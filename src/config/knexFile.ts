@@ -1,4 +1,8 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import * as path from 'path';
+
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 export default {
   client: 'mysql2',
@@ -9,6 +13,6 @@ export default {
     database: process.env.DB_NAME
   },
   migrations: {
-    directory: './src/migrations'
+    directory: path.resolve(__dirname, '../migrations')
   }
 };

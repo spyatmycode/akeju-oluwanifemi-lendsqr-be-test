@@ -8,8 +8,9 @@ export const fundWallet = async (userId: string, amount: number): Promise<Wallet
   return knex.transaction(async (trx) => {
     const wallet = await trx('wallets').where({ userId }).first();
     if (!wallet) throw new Error('Wallet not found');
+
     
-    const newBalance = wallet.balance + amount;
+    const newBalance = parseFloat(wallet.balance) + amount;
     await trx('wallets').where({ userId }).update({ balance: newBalance, updatedAt: new Date() });
     await trx('transactions').insert({
       id: uuidv4(),
@@ -30,8 +31,8 @@ export const transferFunds = async (userId: string, recipientId: string, amount:
     if (!senderWallet || !recipientWallet) throw new Error('Wallet not found');
     if (senderWallet.balance < amount) throw new Error('Insufficient funds');
 
-    await trx('wallets').where({ userId }).update({ balance: senderWallet.balance - amount, updatedAt: new Date() });
-    await trx('wallets').where({ userId: recipientId }).update({ balance: recipientWallet.balance + amount, updatedAt: new Date() });
+    await trx('wallets').where({ userId }).update({ balance: (parseFloat(senderWallet.balance) - amount), updatedAt: new Date() });
+    await trx('wallets').where({ userId: recipientId }).update({ balance: parseFloat(recipientWallet.balance) + amount, updatedAt: new Date() }); 
     await trx('transactions').insert({
       id: uuidv4(),
       userId,
@@ -41,7 +42,7 @@ export const transferFunds = async (userId: string, recipientId: string, amount:
       status: 'SUCCESS',
       createdAt: new Date()
     });
-    return { ...senderWallet, balance: senderWallet.balance - amount };
+    return { ...senderWallet, balance: parseFloat(senderWallet.balance) - amount };
   });
 };
 
@@ -51,7 +52,7 @@ export const withdrawFunds = async (userId: string, amount: number): Promise<Wal
     if (!wallet) throw new Error('Wallet not found');
     if (wallet.balance < amount) throw new Error('Insufficient funds');
 
-    const newBalance = wallet.balance - amount;
+    const newBalance = parseFloat(wallet.balance) - amount;
     await trx('wallets').where({ userId }).update({ balance: newBalance, updatedAt: new Date() });
     await trx('transactions').insert({
       id: uuidv4(),

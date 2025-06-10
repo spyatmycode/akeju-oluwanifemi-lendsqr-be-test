@@ -105,9 +105,9 @@ src/
 
 # Clone the repository
 
-git clone <repo-url>
+git clone <https://github.com/spyatmycode/akeju-oluwanifemi-lendsqr-be-test.git>
 
-cd demo-credit-wallet-service
+cd akeju-oluwanifemi-lendsqr-be-test
 
 # Install dependencies
 
@@ -121,9 +121,13 @@ Create a `.env` file in the root of the project and add the following environmen
 
 ```env
 
-DATABASE_URL=mysql://user:password@host:port/dbname
 
-ADJUTOR_API_KEY=your-lendsqr-api-key
+DB_HOST=
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=
+ADJUTOR_API_KEY=
+PORT=
 
 ```
 

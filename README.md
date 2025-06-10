@@ -123,7 +123,7 @@ Create a `.env` file in the root of the project and add the following environmen
 
 
 DB_HOST=
-DB_USER=root
+DB_USER=
 DB_PASSWORD=
 DB_NAME=
 ADJUTOR_API_KEY=

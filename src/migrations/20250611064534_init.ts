@@ -15,7 +15,6 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('id').primary();
     table.uuid('userId').notNullable().references('id').inTable('users');
     table.decimal('balance', 10, 2).notNullable().defaultTo(0);
-    table.timestamp('cdAt').defaultTo(knex.fn.now());
     table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   

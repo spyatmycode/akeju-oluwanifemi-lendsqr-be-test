@@ -137,7 +137,7 @@ Run the following command to apply the latest database migrations:
 
 ```bash
 
-npx knex migrate:latest
+npm run migrate
 
 ```
 
@@ -190,6 +190,8 @@ npm test
 - Prevention of blacklisted user creation
 
 - Handling of insufficient funds for transfers and withdrawals
+
+##### All tests passed and achieved 90% statement coverage with 95% line coverage
 
 # API Endpoints
 

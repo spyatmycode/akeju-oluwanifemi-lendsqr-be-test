@@ -1,18 +1,17 @@
 import request from 'supertest';
-import app from '../index';
+import { app, server } from '../index'; // Import server
 import knex from '../config/db';
 import * as path from 'path';
 import mockAxios from 'jest-mock-axios';
 
 beforeAll(async () => {
-  mockAxios.get.mockResolvedValue({ data: { blacklisted: false } }); // Here we are mocking the Adjutor API
+  mockAxios.get.mockResolvedValue({ data: { blacklisted: false } });
   await knex.migrate.latest({
     directory: path.resolve(__dirname, '../migrations')
   });
 }, 10000);
 
 beforeEach(async () => {
-  // We first clean up tables in the correct order (child tables first) to avoid foreign key errors.
   await knex('transactions').del();
   await knex('wallets').del();
   await knex('users').del();
@@ -21,12 +20,12 @@ beforeEach(async () => {
   try {
     userResponse = await request(app)
       .post('/users')
-      .send({ name: 'John Doe', email: `john${Date.now()}@example.com` }); // Unique email for every test
+      .send({ name: 'John Doe', email: `john${Date.now()}@example.com` });
     expect(userResponse.status).toBe(201);
     expect(userResponse.body).toHaveProperty('id');
   } catch (error) {
     console.error('User creation failed:', error);
-    throw error; // Fail test if user creation fails
+    throw error;
   }
   userId = userResponse.body.id;
 
@@ -34,7 +33,7 @@ beforeEach(async () => {
   try {
     recipientResponse = await request(app)
       .post('/users')
-      .send({ name: 'Jane Doe', email: `jane${Date.now()}@example.com` }); // Unique email
+      .send({ name: 'Jane Doe', email: `jane${Date.now()}@example.com` });
     expect(recipientResponse.status).toBe(201);
     expect(recipientResponse.body).toHaveProperty('id');
   } catch (error) {
@@ -45,15 +44,14 @@ beforeEach(async () => {
 }, 10000);
 
 afterAll(async () => {
-  // Here we're cleaning up in the correct order before rollback
   await knex('transactions').del();
   await knex('wallets').del();
   await knex('users').del();
-  
   await knex.migrate.rollback({
     directory: path.resolve(__dirname, '../migrations')
   });
   await knex.destroy();
+  server.close(); // Close Express server
   mockAxios.reset();
 }, 10000);
 

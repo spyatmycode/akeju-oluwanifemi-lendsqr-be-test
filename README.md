@@ -209,7 +209,7 @@ npm test
 
 - **Hosting:** Hosted on Heroku: https://akeju-oluwanifemi-lendsqr-be-test.onrender.com
 
-- **Database:** MySQL hosted on a JawsDB MySQL (Free Tier)
+- **Database:** MySQL hosted on a PhpMyAdmin
 
 - **Environment Configuration:** Managed through Render's dashboard.
 

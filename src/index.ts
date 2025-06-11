@@ -9,7 +9,7 @@ import { authMiddleware } from './middleware/auth';
 const app = express();
 app.use(express.json());
 app.get('/', (req: Request, res: Response) => { 
-    res.status(200).json({ message: "Welcome to Oluwanifemi's Lendsqr Backend Assessment" }) 
+    res.status(200).json({ message: "Welcome to Akeju Oluwanifemi's Lendsqr Backend Assessment" }) 
     return
 })
 app.use('/users', userRoutes);

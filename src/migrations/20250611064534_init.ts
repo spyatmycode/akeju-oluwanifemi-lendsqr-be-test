@@ -7,9 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('email').notNullable().unique();
     table.enum('karmaStatus', ['clean', 'blacklisted']).notNullable();
     table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table
-      .timestamp('updatedAt')
-      .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+
   });
   
 
@@ -17,10 +15,8 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('id').primary();
     table.uuid('userId').notNullable().references('id').inTable('users');
     table.decimal('balance', 10, 2).notNullable().defaultTo(0);
-    table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table
-      .timestamp('updatedAt')
-      .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+    table.timestamp('cdAt').defaultTo(knex.fn.now());
+    table.timestamp('updatedAt').defaultTo(knex.fn.now());
   });
   
 
@@ -32,9 +28,6 @@ export async function up(knex: Knex): Promise<void> {
     table.uuid('recipientId').references('id').inTable('users');
     table.enum('status', ['PENDING', 'SUCCESS', 'FAILED']).notNullable();
     table.timestamp('createdAt').defaultTo(knex.fn.now());
-    table
-      .timestamp('updatedAt')
-      .defaultTo(knex.raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
   });
   
 }
